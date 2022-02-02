@@ -1,6 +1,14 @@
 
-# Welcome to your CDK Python project!
+# S3 Event Driven DataSync Python project!
 
+Provides a CDK deployment for using S3 EventBridge notification to sync two buckets with DataSync (Amazon S3 to other object stores). The Lambda function is triggered by SQS events that are created by an S3 "Created Object" EventBridge rule. It stages and concatenates object keys in a manifet file to be used by DataSync for execution. The Lambda function is triggered by a scheduled EventBridge rule for executing DataSync to move the objects specified in the manifest file. 
+
+The primary use case of this workflow is with large object count situations, where list request costs are prohibitive.
+
+## Requirement
+- aws-cdk
+
+## Extra
 You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`s3_event_sync_stack`)
 which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
 
