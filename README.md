@@ -4,6 +4,7 @@
 Provides a CDK deployment for using S3 EventBridge notification to sync two buckets with DataSync (Amazon S3 to other object stores). The Lambda function is triggered by SQS events that are created by an S3 "Created Object" EventBridge rule. It stages and concatenates object keys in a manifet file to be used by DataSync for execution. The Lambda function is triggered by a scheduled EventBridge rule for executing DataSync to move the objects specified in the manifest file. 
 
 The primary use case of this workflow is with large object count situations, where list request costs are prohibitive.
+
 ![](images/arch.png)
 
 ## Requirement
