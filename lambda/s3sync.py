@@ -7,7 +7,6 @@ import os
 
 
 manifest_bucket = os.environ['manifest_bucket_name']
-ds_task_arn = os.environ['datasync_task_arn']
 
 ds_client = boto3.client('datasync')
 s3_client = boto3.client('s3')
@@ -35,7 +34,7 @@ def handler(event, context):
     # a task. 
     # If the trigger is EventBridge (10min schedule and event['triggeredBy'] == 'eventbridge'),
     # execute the task if the manifest isn't empty.
-    if manifest_len < 300000:
+    if manifest_len < 100000:
         try:
             if (event['triggeredBy'] == 'eventbridge'):
                 run_ds_task()                
@@ -66,6 +65,7 @@ def add_to_manifest(event, manifest):
         logger.info('add_to_manifest: No records to add to manifest')
     
 def run_ds_task():
+    logger.info('Calling ds_task from EventBridge')
     # Run the DataSync task with the include filter from the manifest object.
     manifest = s3_client.get_object(Bucket = manifest_bucket, Key = 'manifest')
     data = manifest['Body'].read().decode("utf-8")[1:]
@@ -84,3 +84,4 @@ def run_ds_task():
     # the next set of objects
     s3_client.put_object(Bucket=manifest_bucket, Key='manifest', Body='')
     logger.info('run_ds_task: Cleared manifest after DataSybc task')
+    return response
