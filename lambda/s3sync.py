@@ -67,6 +67,7 @@ def add_to_manifest(event, manifest):
 def run_ds_task():
     logger.info('Calling ds_task from EventBridge')
     # Run the DataSync task with the include filter from the manifest object.
+    ds_task_arn = os.environ['datasync_task_arn']
     manifest = s3_client.get_object(Bucket = manifest_bucket, Key = 'manifest')
     data = manifest['Body'].read().decode("utf-8")[1:]
     response = ds_client.start_task_execution(
