@@ -5,9 +5,7 @@ import botocore
 import logging
 import os
 
-
 manifest_bucket = os.environ['manifest_bucket_name']
-
 ds_client = boto3.client('datasync')
 s3_client = boto3.client('s3')
 logger = logging.getLogger()
@@ -34,7 +32,7 @@ def handler(event, context):
     # a task. 
     # If the trigger is EventBridge (10min schedule and event['triggeredBy'] == 'eventbridge'),
     # execute the task if the manifest isn't empty.
-    if manifest_len < 100000:
+    if manifest_len < 75000:
         try:
             if (event['triggeredBy'] == 'eventbridge'):
                 run_ds_task()                
